@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisador de Numeros</title>
+</head>
+<body>
+    <header>
+        <h1>Analisador de Números</h1>
+    </header>
+
+    <section>
+        <div>
+            <p>
+                Número (Entre 1 e 100):
+
+                <input id="txtn" name="num" type="number">
+            </p>
+
+            <input type="button" value="Adicionar" onclick="inserir()">
+        </div>
+
+        <div>
+            <label for="seltab">Números:</label>
+            <select id="seltab" name="numeros"></select>
+
+            <input id="finalizar" type="button" value="Finalizar" onclick="analisar()">
+        </div>
+
+        <div id="res"></div>
+    </section>
+
+    <footer>
+        <p>&copy; Henrique</p>
+    </footer>
+
+    <style>
+        body {
+            background-color: rgb(70, 142, 236);
+            font: normal 15pt arial
+        }
+
+        header {
+            color: white;
+            text-align: center;
+        }
+
+        section {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            width: 500px;
+            margin: auto;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.363);
+        }
+
+        div {
+            text-align: center;
+            padding: 8px;
+        }
+
+        div input[type=button] {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            background-color: rgb(22, 51, 105);
+            color: white;
+            transition: 0.2s;
+            cursor: pointer;
+            display: flex;
+            margin-left: 44px;
+        }
+
+        div input[type=button]:hover {
+            background-color: rgb(42, 96, 196);
+        }
+
+        div select {
+            display: flex;
+            justify-self: center;
+            margin-left: 44px;
+            overflow: scroll;
+            width: 200px;
+        }
+
+        label {
+            display: flex;
+            margin-left: 44px;
+            margin-top: 20px;
+        }
+
+        #finalizar {
+            background-color: rgb(21, 99, 28);
+            margin-top: 20px;
+        }
+
+        #finalizar:hover {
+            background-color: rgb(27, 150, 37);
+        }
+
+        footer {
+            color: white;
+            text-align: center;
+            font-style: italic;
+        }
+    </style>
+
+    <script>
+        let num = document.getElementById("txtn");
+        let tab = document.getElementById("seltab");
+        let res = document.getElementById("res");
+        let valores = [];
+
+        function inserir() {
+            if (num.value.length == 0) {
+                alert("ERROR\nInforme um número!");
+                return;
+            }
+
+            let n = Number(num.value);
+
+            recuperaValores();
+
+            if (n < 1 || n > 100) {
+                alert("ERROR\nNúmero inválido!");
+                return;
+            }
+
+
+            if (alreadyInList(n)) {
+                alert("ERROR\nNúmero já adicionado!");
+                return;
+            }
+
+            num.value = "";
+            let item = document.createElement("option");
+            item.text = `Valor ${n} adicionado!`;
+            tab.appendChild(item);
+        }
+        
+        function recuperaValores() {
+            let op = tab.options;
+
+            valores = [];
+
+            for (let i = 0; i < op.length; i++) {
+                valores.push(
+                    Number(op[i].text.substring(op[i].text.indexOf("Valor ") + 6, op[i].text.indexOf(" adicionado")))
+                )
+            }
+        }
+
+        function alreadyInList(n) {
+            for (let i = 0; i < valores.length; i++) {
+                if (valores[i] == n) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function analisar() {
+            recuperaValores();
+            
+            if (valores.length == 0) {
+                alert("ERROR\nNenhum número foi adicionado!");
+                return;
+            }
+
+            let soma = 0;
+            let maior = valores[0];
+            let menor = valores[0];
+            
+            valores.forEach(item => {
+                if (item > maior) {
+                    maior = item;
+                }
+
+                if (item < menor) {
+                    menor = item;
+                }
+
+                soma += item;
+            });
+
+            res.innerHTML = "";
+            res.innerHTML += `<p>Ao todo temos ${valores.length} números adicionados.</p>`;
+            res.innerHTML += `<p>O maior valor informado foi ${maior}.</p>`;
+            res.innerHTML += `<p>O menor valor informado foi ${menor}.</p>`;
+            res.innerHTML += `<p>A média dos valores é ${(soma / valores.length).toString()}.</p>`;
+            res.innerHTML += `<p>Somando todos os valores temos ${soma}.</p>`;
+
+            tab.innerHTML = "";
+        }
+    </script>
+</body>
+</html>
