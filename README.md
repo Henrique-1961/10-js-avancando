@@ -1,2 +1,5 @@
-# 10-js-avancando
-Atividade 10 - Desenvolvimento Web
+# #10 - JS: Avançando
+
+### Nome Aluno(a)
+
+Henrique Cardoso de Souza
